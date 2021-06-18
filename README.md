@@ -1,13 +1,14 @@
-# Regular Expressions
+# Internet Protocol (IP) Regular Expressions 
 
-The so-called Perl compatible regular expressions offer enhancement to the POSIX-extended variety used in other software programs.
-A regular expression is a string representing a pattern used for matching some portion(s) of a target string. Regular expressions are very general and as a consequence, very complex with many different types of operations represented as special characters, or meta-characters.
+A regular expression (regex or regexp for short) is a special text string for describing a search pattern. You can think of regular expressions as wildcards on steroids. You are probably familiar with wildcard notations such as *.txt to find all text files in a file manager. The regex equivalent is `^.*\.txt$`.
 
-Regular expression syntax is usually described in a grammatical form, but we'll describe it more loosely from bottom up, the way you would created one. At the bottom are the basic components, called atoms.
+But you can do much more with regular expressions. In a text editor like EditPad Pro or a specialized text processing tool like PowerGREP, you could use the regular expression `\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b` to search for an email address. Any email address, to be exact. A very similar regular expression (replace the first \b with ^ and the last one with $) can be used by a programmer to check whether the user entered a properly formatted email address. In just one line of code, whether that code is written in `Perl`, `PHP`, `Java`, a `.NET` language, or a `multitude of other languages`.
 
 ## Summary
 
-Briefly summarize the regex you will be describing and what you will explain. Include a code snippet of the regex. Replace this text with your summary.
+An `IP address` is a `unique address` that identifies a device on the internet or a local network. IP stands for "Internet Protocol," which is the set of rules governing the format of data sent via the internet or local network.
+
+Matching IP address: `/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
 
 ## Table of Contents
 
@@ -22,66 +23,106 @@ Briefly summarize the regex you will be describing and what you will explain. In
 
 ## Regex Components
 
-### The following table provides examples of basic elements.
+A regex is considered a literal, so the pattern must be wrapped in slash characters `/`. If we examine the “Matching a IP address” regex, you'll see that this is true: 
 
-Components    | Example
-------------- | -------------
-`. `          | Matches any single character. For example, `cou.h` matches `couth`,`couch`, and `cough`.
-`\` followed by a single character  | Lets special characters be used as a single character or “escaped For example, to use this character: `.` as a period precede it with a backslash: `\` Escaped characters are especially useful when describing paths. For example `\.html$` matches any string ending in .html. The following characters need to be preceded by a backslash if they are to be used without special meaning:`\ ` ` .`  ` $`  ` *`  `+`  `[ ] ` ` (   )` `|`
-`$`| Matches any string where the specified pattern occurs at the end of the string. For example, `cause$` matches `cause` and `because` but not `causes`.
-`^` | Matches any string where the specified pattern occurs at the beginning of the string. For example, `^couch` matches `couches` and `couch` but not `uncouch`. Use this element carefully when specifying a domain. For example, the expression `^/couch` matches /couch/index.htm, but not `www.domain.com/couch/index.htm`.
-`[ ]` | Matches any single character in the range or set enclosed in the brackets. For example, `[aeiou]` matches any vowel. You can use a shorthand notation for a range of characters. For example, `[0-9]` matches any decimal digit. If the sequence is preceded by a carat: `^` it matches any single character not from the range or set. For example, `[^a-z]` matches any character that is not a letter of the alphabet.
-`|` | Indicates an OR operator. For example: `couch|chair` finds `couch` or `chair`.
-a regular expression in parenthesis `()` | Used for grouping expressions. The expression `(couch[0-9])|(bed[0-9])` matches `couch36A` or `full_bed33b` but not `couch`.
-a single character	| Matches any string containing the single character to be matched. For example, `a` matches `cause`. You could also combine several characters together, such as `couch`.
+`/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/`
 
+
+#### IP address Brakdowne
+<img src="ip.jpeg" alt="Workout-Tracker" width = "400"/>
+
+`/^(?:(?:25[0-5]|2[0-4][0-9]|[?01][0-9][?0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[?01][0-9][?0-9])$/`
+
+`^` asserts position at start of the string
+
+Non-capturing group `(?:(?:25[0-5]|2[0-4][0-9]|[?01][0-9][?0-9])\.){3}`
+
+`{3}` matches the previous token exactly 3 times
+
+Non-capturing group `(?:25[0-5]|2[0-4][0-9]|[?01][0-9][?0-9])`
+
+### 1st Alternative `25[0-5]`
+25 matches the characters 25 literally
+Match a single character present in the list below `[0-5]`
+0-5 matches a single character in the range between 0 (index 48) and 5 (index 53) 
+### 2nd Alternative `2[0-4][0-9]`
+2 matches the character 2 literally 
+Match a single character present in the list below `[0-4]`
+0-4 matches a single character in the range between 0 (index 48) and 4 (index 52) 
+Match a single character present in the list below `[0-9]`
+### 3rd Alternative `[?01][0-9][?0-9]`
+Match a single character present in the list below `[01]`
+`?` matches the previous token between zero and one times, as many times as possible, giving back as needed (greedy)
+01 matches a single character in the list 01 
+Match a single character present in the list below `[0-9]`
+0-9 matches a single character in the range between 0 (index 48) and 9 (index 57) 
+Match a single character present in the list below `[0-9]`
+`?` matches the previous token between zero and one times, as many times as possible, giving back as needed (greedy)
+0-9 matches a single character in the range between 0 (index 48) and 9 (index 57)  `\.` matches the character . literally (case sensitive)
+Non-capturing group (`?:25[0-5]|2[0-4][0-9]|[?01][0-9][?0-9])`
+`$` asserts position at the end of the string, or before the line terminator right at the end of the string 
 
 ### Anchors
-
-These are special sequences which match an empty substring:
- * `^` matches at the beginning of the target string
- * `$` matches at the end of the target string
- * `\b` matches on a word `boundary`, i.e., the previous or subsequent character is not a word character
+The characters `^` and `$`are both considered to be `anchors`.
 
 ### Quantifiers
 
-Regular expressions use quantifiers to generate unbounded matching possibilities and other matching amount specifications. An atom can optionally be followed by one of these quantifiers:
- * `*`   representing `0` or more occurrences of the atom,
- * `+`  representing `1` or more occurrence of the atom,
- * `?`  representing `0` or `1` occurrences of the atom,
-* the bound `{n}`   representing exactly n occurrences of the atom,
-* the bound `{m,n}`   representing between m and n occurrences of the atom. The quantifier can optionally be followed by `?` indicating that the match be minimal `(non-greedy, reluctant)` as opposed to the default maximal `(greedy)` match.
+Quantifiers are inherently greedy, meaning they match as many occurrences of particular patterns as possible. They include the following:
+
+    * —Matches the pattern zero or more times
+
+    + —Matches the pattern one or more times
+
+    ? —Matches the pattern zero or one time
+
+    {} —Curly brackets can provide three different ways to set limits for a match:
+
+    { n } —Matches the pattern exactly n number of times
+
+    { n, } —Matches the pattern at least n number of times
+
+    { n, x } —Matches the pattern from a minimum of n number of times to a maximum of x number of times
+
+Each of these quantifiers can be made lazy by adding the `?` symbol after it, meaning it will match as few occurrences as possible.
+In ur example we used `{ n }`: 
+`{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)`
+
 
 ### Grouping Constructs
 
+The primary way you group a section of a regex is by using parentheses `()`. Each section within parentheses is known as a subexpression.
+The following example contains two grouping constructs or subexpressions:
+`(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)`
+
+
 ### Bracket Expressions
 
-A bracket expression represents a character set via a list of characters enclosed by the square brackets: `[' and ']`. It normally matches the target string with any single character from the list.
-If the character list begins with `^`, it matches any single character not from the rest of the list.
-
-If two characters in the list are separated by `–` , this is shorthand for the (inclusive) range of characters between those two. It is illegal for two ranges to share an endpoint, e.g. a-c-e. Ranges are collating-sequence dependent and should be avoided for portability.
-Most special characters lose their special status and become literals within brackets. Additionally,
-* `–` is literal at the end or beginning of a bracket expression
-* `^` is literal if not at the beginning of a bracket expression
-The backslash character,
-* ` \`, retains its meaning in bracket expressions, permitting the usage of the special escape sequences: such as `\n`, `\t`, `\w`, `\d`, etc.
-
+Anything inside a set of square brackets `[]` represents a range of characters that we want to match.
+The following example contains breket :
+`25[0-5]|2[0-4][0-9]`
 ### Character Classes
+
+A character class in a regex defines a set of characters, any one of which can occur in an input string to fulfill a match. We've actually already discussed some character classes. The bracket expressions outlined previously, including positive and negative character groups, are considered character classes.
 
 ### The OR Operator
 
+Using the OR operator `|`, the expression [abc] could be written as (a|b|c). Using our example in the grouping constructs section, we can take the original expression:
+`25[0-5]|2[0-4]`
+
 ### Flags
+
+We started this tutorial by explaining that as a literal, a regex must be wrapped in slash characters. The one exception to this rule is with the component known as flags. Flags are placed at the end of a regex, after the second slash, and they define additional functionality or limits for the regex
 
 ### Character Escapes
 
-These are special sequences representing commonly used character sets:
-* `\w` is word (program identifier) character: `[A-Za-z0-9_]`
-* `\W` is non-word character: `[^A-Za-z0-9_]`
-* `\s` is a whitespace character: `[ \f\n\r\t]`
-* `\S `is a non-whitespace character: `[^ \f\n\r\t]`
-* `\d` is a digit character: `[0-9]`
-* `\D` is a non-digit character: `[^0-9]`
+The backslash `\` in a regex escapes a character that otherwise would be interpreted literally. For example, the open curly brace `{` is used to begin a quantifier, but adding a backslash before the open curly brace `\{` means that the regex should look for the open curly brace character instead of beginning to define a quantifier. This is common when looking for strings with special characters that are the same as a particular component of a regex.
+
 
 ## Author
 
-A short section about the author with a link to the author's GitHub profile (replace with your information and a link to your profile)
+###Ahmed A. Hakeem 
+[Github Profile](https://github.com/hakeem235) | [Portfolio](https://hakeem235.github.io/Professional-Portfolio-Vol2/)
+
+##Resources
+* [regex tutorial](https://coding-boot-camp.github.io/full-stack/computer-science/regex-tutorial)
+* [regex validator](https://regex101.com/)
